@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::notDeletedCategory()->findOrFail($id);
         return $this->returnData($product);
     }
 

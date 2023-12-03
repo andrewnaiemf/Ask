@@ -89,7 +89,7 @@ class News extends Resource {
             belongsTo()->make(__('dash.news.user') ,'user' ,Users::class),
             belongsTo()->make(__('dash.news.city') ,'city' ,Cities::class),
             text()->make(__('dash.news.type'),'type'),
-            text()->make(__('dash.news.title'),'phone'),
+            text()->make(__('dash.news.title'),'title'),
             text()->make(__('dash.news.whatsapp_phone'),'whatsapp_phone'),
             text()->make(__('dash.news.phone'),'phone'),
 

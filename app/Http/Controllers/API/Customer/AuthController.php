@@ -17,7 +17,6 @@ use App\Services\ScheduleService;
 
 class AuthController extends Controller
 {
-
     public function register(Request $request)
     {
 
@@ -25,7 +24,7 @@ class AuthController extends Controller
         $validator = $this->validateRegistrationRequest($request);
 
         if ($validator->fails()) {
-            return $this->returnValidationError(401, $validator->errors()->all());
+            return $this->returnValidationError($validator->errors()->all());
         }
 
         $user = $this->createUser($request);
@@ -37,7 +36,7 @@ class AuthController extends Controller
             return $this->unauthorized();
         }
 
-      return  $this->respondWithToken($token,$user);
+        return  $this->respondWithToken($token, $user);
     }
 
 
@@ -50,28 +49,33 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->returnValidationError(401,$validator->errors()->all());
+            return $this->returnValidationError(401, $validator->errors()->all());
         }
         $remember = $request->boolean('remember_me', false);
 
         $credentials = request(['phone', 'password']);
 
 
-        if (! $token = JWTAuth::attempt($credentials,$remember)) {
+        if (! $token = JWTAuth::attempt($credentials, $remember)) {
             return $this->unauthorized();
         }
 
 
         $user = User::find(auth()->user()->id);
 
+        if ($user->account_type != 'user') {
+            return $this->unauthorized();
+        }
+
         $this->device_token($request->device_token, $user);
 
-        return $this->respondWithToken($token ,$user);
+        return $this->respondWithToken($token, $user);
     }
 
 
 
-    public function reset(Request $request){
+    public function reset(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'phone' => 'required|exists:users,phone',
@@ -80,15 +84,15 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->returnValidationError(401,$validator->errors()->all());
+            return $this->returnValidationError(401, $validator->errors()->all());
         }
-        $user = User::where('phone',$request->phone)->first();
+        $user = User::where('phone', $request->phone)->first();
 
         $user->update([
             'password' => Hash::make($request->password),
         ]);
 
-        return $this->returnSuccessMessage( trans("api.Password_updated_successfully") );
+        return $this->returnSuccessMessage(trans("api.Password_updated_successfully"));
     }
 
 
@@ -96,7 +100,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        return $this->returnSuccessMessage( trans("api.logged_out_successfully") );
+        return $this->returnSuccessMessage(trans("api.logged_out_successfully"));
     }
 
 
@@ -113,8 +117,8 @@ class AuthController extends Controller
         $this->device_token($request->device_token, $user);
 
         $user->update(['account_type' => 'user','profile' => '']);
-        if($request->file('profile')){
-            $this->userProfile( $request->file('profile'), $user);
+        if($request->file('profile')) {
+            $this->userProfile($request->file('profile'), $user);
         }
 
 
@@ -126,7 +130,7 @@ class AuthController extends Controller
     public function refresh()
     {
         $user=User::find(auth()->user()->id);
-        return $this->respondWithToken( $user->refresh(), $user);
+        return $this->respondWithToken($user->refresh(), $user);
     }
 
 
@@ -136,16 +140,17 @@ class AuthController extends Controller
     }
 
 
-    private function device_token($device_token,  $user){
+    private function device_token($device_token, $user)
+    {
 
-        if(!isset($user->device_token)){
+        if(!isset($user->device_token)) {
             $user->update(['device_token'=>json_encode($device_token)]);
-        }else{
+        } else {
             $devices_token = $user->device_token;
 
-            if(! in_array( $device_token , $devices_token) ){
-                array_push($devices_token ,$device_token );
-                $user->update(['device_token'=>json_encode( $devices_token)]);
+            if(! in_array($device_token, $devices_token)) {
+                array_push($devices_token, $device_token);
+                $user->update(['device_token'=>json_encode($devices_token)]);
             }
         }
     }
@@ -162,12 +167,13 @@ class AuthController extends Controller
         ]);
     }
 
-    private function userProfile($profile, $user){
+    private function userProfile($profile, $user)
+    {
 
         $path = 'Customer/' .$user->id. '/';
 
         $imageName = $profile->hashName();
-        $profile->storeAs($path,$imageName);
+        $profile->storeAs($path, $imageName);
         $full_path = $path.$imageName;
         $user->update(['profile'=> $full_path]);
     }
@@ -177,7 +183,7 @@ class AuthController extends Controller
     {
         $subdepartmentName = Department::findOrFail($user->provider->subdepartment_id)->name_en;
 
-        if($subdepartmentName == 'Hospitals'){
+        if($subdepartmentName == 'Hospitals') {
             $schedules = [];
             $clinics = Clinic::all();
             $user->provider->clinics()->attach($clinics);

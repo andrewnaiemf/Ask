@@ -15,7 +15,17 @@ class ProviderController extends Controller
     {
         $provider = Provider::where('id', $id)
         ->where('status', 'Accepted')
-        ->with('department', 'subdepartment', 'images', 'ratings', 'user', 'hotelSchedule', 'products')
+        ->with([
+            'department',
+            'subdepartment',
+            'images',
+            'ratings',
+            'user',
+            'hotelSchedule',
+            'products' => function ($query) {
+                $query->notDeletedCategory();
+            },
+        ])
         ->first();
 
         if (!$provider) {

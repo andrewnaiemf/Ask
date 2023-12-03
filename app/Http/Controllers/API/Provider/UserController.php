@@ -95,7 +95,9 @@ class UserController extends Controller
                         'provider.ratings',
                         'provider.clinics.schedules.clinicScheduleDoctors',
                         'provider.categories',
-                        'provider.products'
+                        'provider.products' => function ($query) {
+                            $query->notDeletedCategory();
+                        },
                     ]);
 
         $providerData = $user->toArray();

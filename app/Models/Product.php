@@ -15,6 +15,13 @@ class Product extends Model
 
     public $translatedAttributes = ['name','info'];
 
+    public function scopeNotDeletedCategory($query)
+    {
+        return $query->whereHas('category', function ($query) {
+            $query->whereNull('deleted_at');
+        });
+    }
+
     public function getImagesAttribute($value)
     {
         return json_decode($value, true);

@@ -18,7 +18,6 @@ use App\Services\ScheduleService;
 
 class AuthController extends Controller
 {
-
     public function register(Request $request)
     {
 
@@ -46,11 +45,11 @@ class AuthController extends Controller
         //                                     ($user->provider->subdepartment->id == 24 ?
         //                                     Clinic::where('id', 0)->get() : null);
 
-        if( in_array($user->provider->subdepartment->id, ['22', '23','24']) ){
+        if(in_array($user->provider->subdepartment->id, ['22', '23','24'])) {
             $this->clinicSchedule($user);
         }
 
-        if( in_array($user->provider->subdepartment->id, ['40']) ){//e-commerc
+        if(in_array($user->provider->subdepartment->id, ['40'])) {//e-commerc
             $this->attachCategories($user);
         }
 
@@ -63,7 +62,7 @@ class AuthController extends Controller
             return $this->unauthorized();
         }
 
-      return  $this->respondWithToken($token,$user);
+        return  $this->respondWithToken($token, $user);
     }
 
 
@@ -76,18 +75,22 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->returnValidationError(401,$validator->errors()->all());
+            return $this->returnValidationError(401, $validator->errors()->all());
         }
         $remember = $request->boolean('remember_me', false);
 
         $credentials = request(['phone', 'password']);
 
 
-        if (! $token = JWTAuth::attempt($credentials,$remember)) {
+        if (! $token = JWTAuth::attempt($credentials, $remember)) {
             return $this->unauthorized();
         }
 
         $user = User::find(auth()->user()->id);
+
+        if ($user->account_type != 'proovider') {
+            return $this->unauthorized();
+        }
 
         if ($user->provider) {
             $user_status = $user->provider->status;
@@ -99,7 +102,7 @@ class AuthController extends Controller
         $providerId = $user->provider->id; // Assign the provider ID to $providerId
 
         // Check if the authenticated user is the same as the provider
-        if ($user->provider->id !== $providerId) {
+        if ($user->provider->id !== $providerId || $user->account_type != 'provider') {
             return $this->returnError(__('api.unauthorized'));
         }
 
@@ -110,7 +113,9 @@ class AuthController extends Controller
                         'provider.images',
                         'provider.ratings',
                         'provider.clinics.schedules.clinicScheduleDoctors',
-                        'provider.products'
+                        'provider.products' => function ($query) {
+                            $query->notDeletedCategory();
+                        },
                     ]);
 
         $providerData = $user->toArray();
@@ -135,21 +140,22 @@ class AuthController extends Controller
             $providerData['provider']['clinics'][] = $clinicData;
         }
 
-        if ( $user->provider->department->id == 35) {
+        if ($user->provider->department->id == 35) {
             $providerData['schedule'] = $user->provider->hotelSchedule;
             $providerData['schedule'] = null;
-        }else{
+        } else {
             $scheduleService = new ScheduleService();
             $workTime = $scheduleService->getProviderWorkTime($user->provider->id);
             $providerData['schedule'] =  $workTime ;
             $providerData['hotel_schedule'] = null;
         }
-        return $this->respondWithToken($token ,$providerData);
+        return $this->respondWithToken($token, $providerData);
     }
 
 
 
-    public function reset(Request $request){
+    public function reset(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'phone' => 'required|exists:users,phone',
@@ -158,15 +164,15 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->returnValidationError(401,$validator->errors()->all());
+            return $this->returnValidationError(401, $validator->errors()->all());
         }
-        $user = User::where('phone',$request->phone)->first();
+        $user = User::where('phone', $request->phone)->first();
 
         $user->update([
             'password' => Hash::make($request->password),
         ]);
 
-        return $this->returnSuccessMessage( trans("api.Password_updated_successfully") );
+        return $this->returnSuccessMessage(trans("api.Password_updated_successfully"));
     }
 
 
@@ -174,7 +180,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        return $this->returnSuccessMessage( trans("api.logged_out_successfully") );
+        return $this->returnSuccessMessage(trans("api.logged_out_successfully"));
     }
 
 
@@ -191,8 +197,8 @@ class AuthController extends Controller
         $this->device_token($request->device_token, $user);
 
         $user->update(['account_type' => 'Provider','profile' => '']);
-        if($request->file('profile')){
-            $this->userProfile( $request->file('profile'), $user);
+        if($request->file('profile')) {
+            $this->userProfile($request->file('profile'), $user);
         }
 
         $this->attachProviderData($request, $user);
@@ -205,7 +211,7 @@ class AuthController extends Controller
     public function refresh()
     {
         $user=User::find(auth()->user()->id);
-        return $this->respondWithToken( $user->refresh(), $user);
+        return $this->respondWithToken($user->refresh(), $user);
     }
 
 
@@ -215,16 +221,17 @@ class AuthController extends Controller
     }
 
 
-    private function device_token($device_token,  $user){
+    private function device_token($device_token, $user)
+    {
 
-        if(!isset($user->device_token)){
+        if(!isset($user->device_token)) {
             $user->update(['device_token'=>json_encode($device_token)]);
-        }else{
+        } else {
             $devices_token = $user->device_token;
 
-            if(! in_array( $device_token , $devices_token) ){
-                array_push($devices_token ,$device_token );
-                $user->update(['device_token'=>json_encode( $devices_token)]);
+            if(! in_array($device_token, $devices_token)) {
+                array_push($devices_token, $device_token);
+                $user->update(['device_token'=>json_encode($devices_token)]);
             }
         }
     }
@@ -248,23 +255,25 @@ class AuthController extends Controller
         ]);
     }
 
-    private function userProfile($profile, $user){
+    private function userProfile($profile, $user)
+    {
 
         $path = 'Provider/' .$user->id. '/';
 
         $imageName = $profile->hashName();
-        $profile->storeAs($path,$imageName);
+        $profile->storeAs($path, $imageName);
         $full_path = $path.$imageName;
         $user->update(['profile'=> $full_path]);
     }
 
-    private function attachProviderData($request, $user){
+    private function attachProviderData($request, $user)
+    {
 
         $commercial_register_iamge = $request->file('commercial_register_iamge');
         $path = 'Provider/' .$user->id. '/';
 
         $imageName = $commercial_register_iamge->hashName();
-        $commercial_register_iamge->storeAs($path,$imageName);
+        $commercial_register_iamge->storeAs($path, $imageName);
         $full_path = $path.$imageName;
 
         $providerData = [
@@ -286,17 +295,18 @@ class AuthController extends Controller
     {
         $subdepartmentName = Department::findOrFail($user->provider->subdepartment_id)->name_en;
 
-        if(in_array($subdepartmentName , ['Hospitals' , 'Private clinics'])){
+        if(in_array($subdepartmentName, ['Hospitals' , 'Private clinics'])) {
             $clinics = Clinic::where('id', '<>', 100)->get();
             $user->provider->clinics()->attach($clinics);
-        }elseif( $subdepartmentName == 'Veterinary clinics'){
+        } elseif($subdepartmentName == 'Veterinary clinics') {
             $clinics =  Clinic::where('id', 100)->get();
             $user->provider->clinics()->attach($clinics);
         }
         return;
     }
 
-    public function attachCategories($user){
+    public function attachCategories($user)
+    {
         $categories = Category::where(['department_id' => $user->provider->subdepartment_id])->get();
         $user->provider->categories()->attach($categories);
     }
