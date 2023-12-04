@@ -17,7 +17,7 @@ class Product extends Model
 
     public function scopeNotDeletedCategory($query)
     {
-        return $query->whereHas('category', function ($query) {
+        return $query->with('category')->whereHas('category', function ($query) {
             $query->whereNull('deleted_at');
         });
     }
