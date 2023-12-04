@@ -37,7 +37,9 @@ class OrderController extends Controller
         ->when($request->status == 'Rejected', function ($query) {
             return $query->where('status', 'Rejected');
         })
-        ->with(['orderItems.product','user','address'])
+        ->with(['orderItems.product' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted products
+        }, 'user', 'address'])
         ->orderBy('updated_at', 'desc')
         ->simplePaginate($perPage);
 
@@ -77,7 +79,10 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::where(['id' => $id,'type' => 'Order'])
-        ->with(['orderItems','user','address'])->first();
+        ->with(['orderItems.product' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted products
+        }, 'user', 'address'])
+        ->first();
 
         return $this->returnData($order);
     }

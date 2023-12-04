@@ -324,7 +324,10 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::where(['id' => $id,'type' => 'Order'])
-        ->with(['orderItems','user','provider','address'])->first();
+        ->with(['orderItems.product' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted products
+        }, 'provider', 'user', 'address'])
+        ->first();
 
         return $this->returnData($order);
     }
