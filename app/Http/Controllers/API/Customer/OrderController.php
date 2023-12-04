@@ -263,33 +263,33 @@ class OrderController extends Controller
 
     public function showCart()
     {
-        $order = Order::where(['user_id' => auth()->user()->id, 'type' => 'Cart'])->with('orderItems.product')->first();
+        $order = Order::where(['user_id' => auth()->user()->id, 'type' => 'Cart'])->first();
 
         if ($order) {
             // Remove order items where the product is not available or stock is less than quantity
-            $order->orderItems->each(function ($item) {
+            foreach ($order->orderItems as $item) {
                 if (!$item->product || $item->product->stock < $item->qty) {
                     $item->delete();
                 }
-            });
+            }
 
-            if (empty($order->order_items)) {
+            $orderItems = OrderItem::where(['order_id' => $order->id])->get();
+
+            if (count($orderItems) == 0) {
                 $order->delete();
+                $order = null;
             }else{
-                // Recalculate the sub_total_price for the order based on updated order items
-                $order->sub_total_price = $order->orderItems->sum(function ($item) {
-                    return $item->qty * $item->unit_price;
-                });
-
+                $sub_total_price = 0;
+                foreach ( $orderItems as $item) {
+                    $sub_total_price +=  $item->qty * $item->unit_price;
+                }
+                $order->sub_total_price = $sub_total_price;
                 // Recalculate the total_amount
                 $order->total_amount = $order->sub_total_price - $order->coupon_amount;
-
-
-                $order->load('orderItems.product');
+                $order->save();
             }
-            $order->save();
         }
-
+        $order->load('orderItems.product');
         return $this->returnData($order);
     }
 
