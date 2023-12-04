@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Provider;
 use App\Models\ProviderOffering;
 use App\Models\User;
+use App\Notifications\PushNotification;
 use App\Rules\ValidateStock;
 use App\Traits\AskOrderTrait;
 use Illuminate\Http\Request;
@@ -120,12 +121,13 @@ class OrderController extends Controller
 
     private function updateStatus($order, $status){
 
-        $orderStatus = ['Accepted', 'Pending', 'Pending', 'Rejected', 'Completed'];
+        $orderStatus = ['Accepted', 'Pending', 'Rejected', 'Completed'];
         $shippingStatus = ['ReadyForShipping', 'Shipped', 'Delivered'];
 
         if (in_array($status ,$orderStatus))
         {
             $this->updateOrderStatus($order, $status);
+            PushNotification::create($order->provider->user_id, $order->user_id, $order, $status.'_order');
             $this->updateOrderPaymentStatus($order, $status);
         }
 
