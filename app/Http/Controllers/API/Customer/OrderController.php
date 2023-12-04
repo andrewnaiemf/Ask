@@ -213,13 +213,15 @@ class OrderController extends Controller
     public function updateShipping($request, $order)
     {
 
-        // if ($request->shipping_method == 'OurDelivery') {
-        //     $offer = ProviderOffering::where('provider_id', $order->provider_id)->first();
+        $delivey_fees = 0;
+        if ($request->shipping_method == 'Pickup' && $order->shipping_method && $order->shipping_method != 'Pickup') {
+            $offer = ProviderOffering::where('provider_id', $order->provider_id)->first();
 
-        //     $delivey_fees = $offer->delivey_fees;
-        // }
+            $delivey_fees = $offer->delivey_fees;
+        }
         $order->update([
-            'shipping_method' => $request->shipping_method
+            'shipping_method' => $request->shipping_method,
+            'total_amount' => $order->total_amount - $delivey_fees,
         ]);
     }
 
@@ -277,7 +279,7 @@ class OrderController extends Controller
 
     public function showCart()
     {
-        $order = Order::where(['user_id' => auth()->user()->id, 'type' => 'Cart'])->first();
+        $order = Order::where(['user_id' => auth()->user()->id, 'type' => 'Cart'])->with('orderItems.product')->first();
 
         if ($order) {
             // Remove order items where the product is not available or stock is less than quantity
@@ -300,10 +302,14 @@ class OrderController extends Controller
                 $order->sub_total_price = $sub_total_price;
                 // Recalculate the total_amount
                 $order->total_amount = $order->sub_total_price - $order->coupon_amount;
+
+                if (isset($order->shipping_method) && $order->shipping_method == 'OurDelivery') {
+                    $order->total_amount += $order->delivery_fees;
+                }
+
                 $order->save();
             }
         }
-        $order->load('orderItems.product');
         return $this->returnData($order);
     }
 
