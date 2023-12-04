@@ -51,4 +51,5 @@ return [
         'deletedSuccessfully' => 'تم حذف الغرفة بنجاح',
     ],
     'newsRequestAlreadySentBefore' => 'تم ارسال الطلب من قبل',
+    'cantMakeOrderFromDifferentProvider' => 'لا تستطيع طلب اوردر من اكثر من مقدك خدمة',
 ];

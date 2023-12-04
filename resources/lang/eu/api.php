@@ -51,6 +51,7 @@ return [
         'deletedSuccessfully' => 'کمرے کامیابی سے حذف کردیے گئے',
     ],
     'newsRequestAlreadySentBefore' => 'خبر کی درخواست پہلے ہی بھیج دی گئی ہے',
+    'cantMakeOrderFromDifferentProvider' => 'آپ ایک ہی پرووائیڈر سے زیادہ سے زیادہ ایک آرڈر بنا سکتے ہیں۔',
 
 ];
 

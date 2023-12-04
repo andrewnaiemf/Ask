@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Rules\ValidateStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
@@ -136,9 +137,19 @@ class OrderController extends Controller
     {
 
         $order = Order::where(['user_id' => auth()->user()->id,'type' => 'Cart'])->first();
+        $provider = Provider::find( $order->provider_id );
+        $provider_products_id = $provider->products->pluck('id')->toArray();
 
         $validator = Validator::make($request->all(), [
-            'product_id' => 'nullable|exists:products,id',
+            'product_id' => [
+                'nullable',
+                'exists:products,id',
+                function ($attribute, $value, $fail) use ($provider_products_id) {
+                    if (!in_array($value, $provider_products_id)) {
+                        $fail($attribute . __('api.cantMakeOrderFromDifferentProvider'));
+                    }
+                },
+            ],
             'qty' => [
                 'nullable',
                 'integer',

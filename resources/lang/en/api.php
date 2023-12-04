@@ -51,4 +51,6 @@ return [
         'deletedSuccessfully' => 'room deleted successfully',
     ],
     'newsRequestAlreadySentBefore' => 'news request already sent before',
+    'cantMakeOrderFromDifferentProvider' => ' You can not make order from different provider.',
+
 ];
