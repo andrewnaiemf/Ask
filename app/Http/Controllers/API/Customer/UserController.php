@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Clinic;
 use App\Models\Department;
 use App\Models\DocumentProvider;
+use App\Models\Order;
 use App\Models\Provider;
 use App\Models\Schedule;
 use App\Models\User;
@@ -73,7 +74,7 @@ class UserController extends Controller
     public function me(){
 
         $user = User::with('city')->find(auth()->user()->id);
-
+        $user['cart'] = Order::where('type','Cart')->with('orderItems.product')->first();
         return $this->returnData(['user' => $user]);
 
     }
