@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Provider;
 use App\Models\ProviderOffering;
 use App\Models\User;
+use App\Notifications\PushNotification;
 use App\Rules\ValidateStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -201,6 +202,8 @@ class OrderController extends Controller
 
         if ($request->type) {
             $order->update(['type' => $request->type, 'status' => 'Accepted']);
+            PushNotification::create($order->user_id ,$order->provider->user_id ,$order ,'new_order');
+
             return $this->returnSuccessMessage('api.orderCreatedSuccessfully');
         }
 
