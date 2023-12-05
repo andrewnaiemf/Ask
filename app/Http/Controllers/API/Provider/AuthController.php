@@ -88,7 +88,7 @@ class AuthController extends Controller
 
         $user = User::find(auth()->user()->id);
 
-        if ($user->account_type != 'proovider') {
+        if ($user->account_type != 'provider') {
             return $this->unauthorized();
         }
 
