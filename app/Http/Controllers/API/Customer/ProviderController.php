@@ -13,8 +13,14 @@ class ProviderController extends Controller
 {
     public function show($id)
     {
+        $user_city_id = auth()->user() ? auth()->user()->city_id : null;
         $provider = Provider::where('id', $id)
         ->where('status', 'Accepted')
+        ->whereHas('user', function ($query) use ($user_city_id){
+            if($user_city_id){
+                $query->where('city_id', $user_city_id);
+            }
+        })
         ->with([
             'department',
             'subdepartment',

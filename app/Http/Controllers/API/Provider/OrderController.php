@@ -39,8 +39,12 @@ class OrderController extends Controller
         })
         ->with(['orderItems.product' => function ($query) {
             $query->withTrashed(); // Include soft-deleted products
-        }, 'user', 'address'])
-        ->orderBy('updated_at', 'desc')
+        },
+        'user',
+        'address' => function ($query) {
+            $query->withTrashed(); // Include soft-deleted addresses
+        }
+        ])->orderBy('updated_at', 'desc')
         ->simplePaginate($perPage);
 
         return $this->returnData($orders);

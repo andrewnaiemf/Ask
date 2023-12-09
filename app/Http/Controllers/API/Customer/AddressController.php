@@ -106,7 +106,27 @@ class AddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $userId = auth()->user()->id;
+
+        // Validate the request data
+        $validation = $this->validateAddressData($request);
+        if ($validation) {
+            return $validation;
+        }
+
+        // Find the address by ID
+        $address = Address::findOrFail($id);
+
+        // Check if the user is the owner of the address
+        if ($address->user_id != $userId) {
+            return $this->returnErrorMessage(trans("api.unauthorizedAction"));
+        }
+
+        // Update the address with the new data
+        $address->update($request->all());
+
+        return $this->returnSuccessMessage(trans("api.addressUpdatedSuccessfully"));
+
     }
 
     /**
@@ -117,6 +137,9 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $address = Address::findOrFail($id);
+        $address->delete();
+        return $this->returnSuccessMessage( trans("api.addressDeletedSuccessfully") );
+
     }
 }
