@@ -19,7 +19,7 @@ class FavoriteController extends Controller
     {
         $perPage = $request->header('per_page', 10);
 
-        $addresses = Favorite::where('user_id',auth()->user()->id)->with('news','user')->simplePaginate($perPage);
+        $addresses = Favorite::where('user_id',auth()->user()->id)->with('news', 'user', 'product')->simplePaginate($perPage);
 
         return $this->returnData($addresses);
     }
@@ -49,9 +49,18 @@ class FavoriteController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->returnValidationError(401,$validator->errors()->all());
+            return $this->returnValidationError($validator->errors()->all());
         }
 
+        $existingFavorite = Favorite::where([
+            'user_id' => $request->user_id,
+            'type' => $request->type,
+            'item_id' => $request->item_id
+        ])->first();
+
+        if ($existingFavorite) {
+            return $this->returnSuccessMessage(trans("api.AlreadyInFavorites"));
+        }
         $favorite = Favorite::create($validator->validated());
 
         return $this->returnSuccessMessage( trans("api.AddedToFavoriteSuccessfully") );

@@ -22,6 +22,20 @@ class Favorite extends Model
         'updated_at',
     ];
 
+    public function toArray()
+    {
+
+        $array['id'] = $this['id'];
+        $array['user_id'] = $this['user_id'];
+        $array['type'] = $this['type'];
+        $array['news'] = $this['type'] == 'news' ? $this->news : null;
+        $array['product'] = $this['type'] == 'product' ? $this->product : null;
+        $array['user'] = $this['user'];
+
+        return $array;
+    }
+
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -32,8 +46,8 @@ class Favorite extends Model
         return $this->belongsTo(News::class ,'item_id');
     }
 
-    // public function product()
-    // {
-    //     return $this->belongsTo(Product::class);
-    // }
+    public function product()
+    {
+        return $this->belongsTo(Product::class ,'item_id');
+    }
 }
