@@ -67,7 +67,7 @@ class HomeController extends Controller
 
         if ($request->search_for == 'provider') {
 
-            $data = User::where('account_type', 'provider')
+            $data = User::where('account_type', 'provider')->with('provider')
             ->where('name', 'LIKE', '%' . $searchTerm . '%')
             ->simplePaginate($perPage);
         }else if($request->search_for == 'department'){
