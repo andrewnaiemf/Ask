@@ -203,7 +203,12 @@ class OrderController extends Controller
         $order->save();
 
         if ($request->type) {
+            $checkStock = $this->chechStock($order);
+            if (!$checkStock) {
+                return $this->returnSuccessMessage('api.someProductIsNotAvailableNow');
+            }
             $order->update(['type' => $request->type, 'status' => 'Accepted']);
+            $this->decreaseStock($order);
             PushNotification::create($order->user_id ,$order->provider->user_id ,$order ,'new_order');
 
             return $this->returnSuccessMessage('api.orderCreatedSuccessfully');
@@ -335,6 +340,37 @@ class OrderController extends Controller
         ])->first();
 
         return $this->returnData($order);
+    }
+
+    public function decreaseStock($order) {
+        $orderItems = $order->orderItems;
+
+        foreach ($orderItems as $item) {
+            $itemQty = $item->qty;
+            $product = $item->product;
+
+            if ($product) {
+                // Ensure stock does not go below zero
+                $product->stock = max(0, $product->stock - $itemQty);
+                $product->save();
+            }
+        }
+
+    }
+
+    public function chechStock($order){
+        $orderItems = $order->orderItems;
+
+        foreach ($orderItems as $item) {
+            $itemQty = $item->qty;
+            $product = $item->product;
+
+            if ($product && $product->stock < $itemQty) {
+                return false; // Return false if stock is less than item qty
+            }
+        }
+
+        return true; // Return true if stock is sufficient for all items
     }
 
     /**
