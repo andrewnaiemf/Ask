@@ -77,6 +77,15 @@ class OrderController extends Controller
             return $this->returnError('You already have cart');
         }
 
+       $order = $this->createNewCart($request);
+       $order->load('orderItems');
+
+        return $this->returnData($order);
+
+    }
+
+    public function createNewCart($request){
+
         $order = Order::create([
             'user_id' => auth()->user()->id,
             'provider_id' => $request->provider_id,
@@ -105,9 +114,7 @@ class OrderController extends Controller
             'sub_total_price' => $price
         ]);
 
-        $order->load('orderItems');
-
-        return $this->returnData($order);
+        return $order;
 
     }
 
@@ -143,13 +150,16 @@ class OrderController extends Controller
         $provider = Provider::find( $order->provider_id );
         $provider_products_id = $provider->products->pluck('id')->toArray();
 
+        if($request->force_edit && $request->product_id){
+            array_push($provider_products_id, $request->product_id);
+        }
         $validator = Validator::make($request->all(), [
             'product_id' => [
                 'nullable',
                 'exists:products,id',
                 function ($attribute, $value, $fail) use ($provider_products_id) {
                     if (!in_array($value, $provider_products_id)) {
-                        $fail($attribute . __('api.cantMakeOrderFromDifferentProvider'));
+                        $fail( __('api.cantMakeOrderFromDifferentProvider'));
                     }
                 },
             ],
@@ -254,10 +264,24 @@ class OrderController extends Controller
 
     public function updateQty($request, $order)
     {
-        $orderItem = $order->orderItems()->where('product_id', $request->product_id)->first();
+        if ($request->force_edit) {
+            $provider_id = Product::find($request->product_id)->provider_id;
+            $request->provider_id = $provider_id;
+            $order->delete();
+            return $order = $this->createNewCart($request);
+        }
+
+        if($request->orderItemId){
+            $orderItem = $order->orderItems()->where('id', $request->orderItemId)->first();
+        }
+
+        if($request->product_id) {
+            $orderItem = $order->orderItems()->where('product_id', $request->product_id)->first();
+        }
 
         if ($request->qty !== 0) {
-            if ($orderItem) {
+
+            if ($orderItem && !$request->is_add_again) {
 
                 $orderItem->qty = $request->input('qty');
                 $orderItem->save();
@@ -265,14 +289,15 @@ class OrderController extends Controller
             } else {
 
                 $product = Product::find($request->product_id);
-                $newOrderItem = new OrderItem([
+                $orderItem = new OrderItem([
+                    'order_id' => $order->id,
                     'product_id' => $product->id,
                     'qty' => $request->qty,
                     'unit_price' =>  $product->price
                 ]);
-
-                $order->orderItems()->save($newOrderItem);
+                $orderItem->save();
             }
+
         } else {
             if (isset($orderItem)) {
                 $orderItem->delete();
