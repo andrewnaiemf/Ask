@@ -30,7 +30,7 @@ class HomeController extends Controller
         }
 
         $mostRate = $this->mostRate();
-        $mainDepartments = $this->mainDepartments();
+        $mainDepartments = $this->mainDepartments($user);
 
         return $this->returnData(['user' => $user, 'mostRate' => $mostRate, 'mainDepartments' => $mainDepartments]);
 
@@ -45,9 +45,21 @@ class HomeController extends Controller
         return  $providers;
     }
 
-    function mainDepartments(){
+    function mainDepartments($user){
 
-        $departments = Department::with('subdepartments.providers.user')->whereNull('parent_id')->get();
+        $cityId = null;
+        if ($user) {
+            $cityId = $user->city_id;
+        }
+        // dd($cityId );
+        $departments = Department::with(['subdepartments.providers' => function ($query) use ($cityId) {
+            $query->whereHas('user', function ($userQuery) use ($cityId) {
+                if ($cityId) {
+                    $userQuery->where('city_id', $cityId);
+                }
+            });
+        }])->get();
+
         return  $departments;
 
     }
