@@ -52,4 +52,14 @@ return [
     ],
     'newsRequestAlreadySentBefore' => 'تم ارسال الطلب من قبل',
     'cantMakeOrderFromDifferentProvider' => 'لا تستطيع طلب اوردر من اكثر من مقدك خدمة',
+    'InvalidCoupon' => 'كوبون غير صالح',
+    'someProductIsNotAvailableNow' => 'بعض المنتجات غير متاحة حالياً',
+    'orderCreatedSuccessfully' => 'تم إنشاء الطلب بنجاح',
+    'cartUpdatedSuccessfully' => 'تم تحديث العربة بنجاح',
+    'unauthorizedAction' => 'غير مصرح لها',
+    'addressUpdatedSuccessfully' => 'تم تحديث العنوان بنجاح',
+    'addressDeletedSuccessfully' => 'تم حذف العنوان بنجاح',
+
+
+
 ];

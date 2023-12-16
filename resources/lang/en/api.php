@@ -51,6 +51,13 @@ return [
         'deletedSuccessfully' => 'room deleted successfully',
     ],
     'newsRequestAlreadySentBefore' => 'news request already sent before',
-    'cantMakeOrderFromDifferentProvider' => ' You can not make order from different provider.',
+    'cantMakeOrderFromDifferentProvider' => 'You cannot order from more than one service provider in a single order',
+    'InvalidCoupon' => 'Invalid coupon',
+    'someProductIsNotAvailableNow' => 'Some products are not available at the moment',
+    'orderCreatedSuccessfully' => 'Order created successfully',
+    'cartUpdatedSuccessfully' => 'Cart updated successfully',
+    'unauthorizedAction' => 'Unauthorized',
+    'addressUpdatedSuccessfully' => 'Address updated successfully',
+    'addressDeletedSuccessfully' => 'Address deleted successfully',
 
 ];

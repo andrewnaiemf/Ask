@@ -52,6 +52,13 @@ return [
     ],
     'newsRequestAlreadySentBefore' => 'خبر کی درخواست پہلے ہی بھیج دی گئی ہے',
     'cantMakeOrderFromDifferentProvider' => 'آپ ایک ہی پرووائیڈر سے زیادہ سے زیادہ ایک آرڈر بنا سکتے ہیں۔',
+    'InvalidCoupon' => 'غیر موثر کوڈ',
+    'someProductIsNotAvailableNow' => 'کچھ مصنوعات اس وقت دستیاب نہیں ہیں',
+    'orderCreatedSuccessfully' => 'آرڈر براہ کرمی کامیابی سے بنایا گیا ہے',
+    'cartUpdatedSuccessfully' => 'کارٹ کو کامیابی سے تازہ کیا گیا ہے',
+    'unauthorizedAction' => 'غیر مجاز عمل',
+    'addressUpdatedSuccessfully' => 'پتہ کامیابی سے اپ ڈیٹ ہوا ہے',
+    'addressDeletedSuccessfully' => 'پتہ کامیابی سے حذف ہوگیا ہے',
 
 ];
 
