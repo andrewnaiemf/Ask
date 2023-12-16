@@ -58,7 +58,7 @@ class HomeController extends Controller
                     $userQuery->where('city_id', $cityId);
                 }
             });
-        }])->get();
+        }])->whereNull('parent_id')->get();
 
         return  $departments;
 
