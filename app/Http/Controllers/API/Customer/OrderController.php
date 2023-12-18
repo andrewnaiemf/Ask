@@ -41,8 +41,8 @@ class OrderController extends Controller
             // Include the associated user, but only include soft-deleted users
             $query->with(['user' => function ($userQuery) {
                 $userQuery->withTrashed();
-            }, 'address']);
-        }])
+            }]);
+        }], 'address')
         ->orderBy('updated_at', 'desc')
         ->simplePaginate($perPage);
 
