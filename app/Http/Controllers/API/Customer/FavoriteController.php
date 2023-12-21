@@ -17,11 +17,11 @@ class FavoriteController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->header('per_page', 10);
+        // $perPage = $request->header('per_page', 10);
 
-        $addresses = Favorite::where('user_id',auth()->user()->id)->with('news', 'user', 'product')->simplePaginate($perPage);
+        $favorites = Favorite::where('user_id',auth()->user()->id)->with('news.city', 'user', 'product')->get();
 
-        return $this->returnData($addresses);
+        return $this->returnData($favorites);
     }
 
     /**
