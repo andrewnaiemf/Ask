@@ -38,7 +38,7 @@ class HotelController extends Controller
         if ( $validation) {
             return $validation;
         }
-        $filteredRooms = Room::filterRooms($request->all())->get();
+        $filteredRooms = Room::filterRooms($request->all())->where('provider_id',$request->provider_id)->get();
 
         $filteredRooms->each(function ($room) use ($request) {
             $room->total_cost = $room->calculateTotalCost($request->all());
