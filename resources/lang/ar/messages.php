@@ -9,5 +9,8 @@ return [
     'your_order_pending' => 'طلبك قيد الانتظار الآن',
     'your_order_Rejected' => 'تم رفض طلبك',
     'your_order_Completed' => 'تم استكمال طلبك',
+    'new_order' => 'لديك طلب جديد',
+    'rating_message' => 'لديك تقييم',
+
 
 ];

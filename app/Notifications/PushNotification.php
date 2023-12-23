@@ -112,15 +112,15 @@ class PushNotification
                 break;
             case 'Pending_order':
                 $message = $sender->name . ' ' . __('messages.your_order_pending');
-                $messageTemplateKey = 'order';
+                $messageTemplateKey = 'your_order_pending';
                 break;
             case 'Rejected_order':
                 $message = $sender->name . ' ' . __('messages.your_order_Rejected');
-                $messageTemplateKey = 'order';
+                $messageTemplateKey = 'your_order_Rejected';
                 break;
             case 'Completed_order':
                 $message = $sender->name . ' ' . __('messages.your_order_Completed');
-                $messageTemplateKey = 'order';
+                $messageTemplateKey = 'your_order_Completed';
                 break;
             default:
                 $message = '';

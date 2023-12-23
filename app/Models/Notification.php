@@ -38,6 +38,8 @@ class Notification extends Model
     protected function generateMessage($messageTemplateKey, $sender, $data)
     {
         $message = '';
+        $currentLanguage = auth()->user()->lng ?? 'en';
+        app()->setLocale($currentLanguage);
 
         switch ($messageTemplateKey) {
             case 'rating_message':

@@ -9,5 +9,7 @@ return [
     'your_order_pending' => 'Your order is pending now',
     'your_order_Rejected' => 'Your order is rejected',
     'your_order_Completed' => 'Your order is completed',
+    'new_order' => 'You have new order',
+    'rating_message' => 'You have rating'
 
 ];

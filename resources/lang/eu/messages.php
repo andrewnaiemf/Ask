@@ -9,5 +9,8 @@ return [
     'your_order_pending' => 'آپ کا آرڈر ابھی قیدِ انتظار میں ہے',
     'your_order_Rejected' => 'آپ کا آرڈر مسترد ہوا ہے',
     'your_order_Completed' => 'آپ کا آرڈر مکمل ہوا ہے',
+    'new_order' => 'آپ کے پاس نیا آرڈر ہے',
+    'rating_message' => 'آپ کو ریٹنگ ملی ہے',
+
 ];
 
