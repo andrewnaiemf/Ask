@@ -40,6 +40,7 @@ return [
     'bookingSentSuccessfully' => 'تم إرسال الحجز بنجاح',
     'InvalidProvider' => 'مقدم الخدمة غير صالح',
     'AddedToFavoriteSuccessfully' => 'تمت الإضافة إلى المفضلة بنجاح',
+    'AlreadyInFavorites' => 'بالفعل توجد في المفضلة',
     'RemovedFromFavoriteSuccessfully' => 'تمت الإزالة من المفضلة بنجاح',
     'newsCreatedSuccessfully' => 'تم إنشاء الأخبار بنجاح',
     'newsRequestSentSuccessfully' => 'تم إرسال طلب الأخبار بنجاح',
@@ -55,11 +56,17 @@ return [
     'InvalidCoupon' => 'كوبون غير صالح',
     'someProductIsNotAvailableNow' => 'بعض المنتجات غير متاحة حالياً',
     'orderCreatedSuccessfully' => 'تم إنشاء الطلب بنجاح',
+    'orderUpdatedSuccessfully' => 'تم تحديث الطلب بنجاح',
     'cartUpdatedSuccessfully' => 'تم تحديث العربة بنجاح',
     'unauthorizedAction' => 'غير مصرح لها',
     'addressUpdatedSuccessfully' => 'تم تحديث العنوان بنجاح',
     'addressDeletedSuccessfully' => 'تم حذف العنوان بنجاح',
-
+    'InvalidCoupon' => 'كوبون غير صالح',
+    'product' => [
+        'createdSuccessfully' => 'تم الإنشاء بنجاح',
+        'updatedSuccessfully' => 'تم التحديث بنجاح',
+        'deletedSuccessfully' => 'تم الحذف بنجاح',
+    ],
 
 
 ];

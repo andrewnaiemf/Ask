@@ -40,6 +40,7 @@ return [
     'bookingSentSuccessfully' => 'booking sent successfully',
     'InvalidProvider' => 'Invalid Provider',
     'AddedToFavoriteSuccessfully' => 'added to favorite Successfully',
+    'AlreadyInFavorites' => 'Already in favorites',
     'RemovedFromFavoriteSuccessfully' => 'removed to favorite Successfully',
     'newsCreatedSuccessfully' => 'news created successfully',
     'newsRequestSentSuccessfully' => 'news request sent successfully',
@@ -56,8 +57,16 @@ return [
     'someProductIsNotAvailableNow' => 'Some products are not available at the moment',
     'orderCreatedSuccessfully' => 'Order created successfully',
     'cartUpdatedSuccessfully' => 'Cart updated successfully',
+    'orderUpdatedSuccessfully' => 'Order updated successfully',
     'unauthorizedAction' => 'Unauthorized',
     'addressUpdatedSuccessfully' => 'Address updated successfully',
     'addressDeletedSuccessfully' => 'Address deleted successfully',
+    'InvalidCoupon' => 'Invalid coupon',
+    'product' => [
+        'createdSuccessfully' => 'Created successfully',
+        'updatedSuccessfully' => 'Updated successfully',
+        'deletedSuccessfully' => 'Deleted successfully',
+
+    ],
 
 ];

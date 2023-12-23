@@ -40,6 +40,7 @@ return [
     'bookingSentSuccessfully' => 'بکنگ کامیابی سے بھیجی گئی',
     'InvalidProvider' => 'غلط پروائیڈر',
     'AddedToFavoriteSuccessfully' => 'منتخب کرنے کامیابی سے شامل کر لیا گیا',
+    'AlreadyInFavorites' => 'پہلے ہی پسندیدہ میں.',
     'RemovedFromFavoriteSuccessfully' => 'منتخب کرنے کامیابی سے نکال دیا گیا',
     'newsCreatedSuccessfully' => 'خبریں کامیابی سے تخلیق کی گئیں',
     'newsRequestSentSuccessfully' => 'خبریں کے درخواست کامیابی سے بھیجی گئیں',
@@ -55,10 +56,18 @@ return [
     'InvalidCoupon' => 'غیر موثر کوڈ',
     'someProductIsNotAvailableNow' => 'کچھ مصنوعات اس وقت دستیاب نہیں ہیں',
     'orderCreatedSuccessfully' => 'آرڈر براہ کرمی کامیابی سے بنایا گیا ہے',
+    'orderUpdatedSuccessfully' => 'آرڈر کو کامیابی سے اپ ڈیٹ کیا گیا ہے',
     'cartUpdatedSuccessfully' => 'کارٹ کو کامیابی سے تازہ کیا گیا ہے',
     'unauthorizedAction' => 'غیر مجاز عمل',
     'addressUpdatedSuccessfully' => 'پتہ کامیابی سے اپ ڈیٹ ہوا ہے',
     'addressDeletedSuccessfully' => 'پتہ کامیابی سے حذف ہوگیا ہے',
+    'InvalidCoupon' => 'غلط کوپن',
+    'product' => [
+        'createdSuccessfully' => 'کامیابی سے بنایا گیا',
+        'updatedSuccessfully' => 'کامیابی سے اپ ڈیٹ کیا گیا',
+        'deletedSuccessfully' => 'کامیابی سے حذف کیا گیا',
+    ],
+
 
 ];
 
