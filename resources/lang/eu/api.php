@@ -67,6 +67,7 @@ return [
         'updatedSuccessfully' => 'کامیابی سے اپ ڈیٹ کیا گیا',
         'deletedSuccessfully' => 'کامیابی سے حذف کیا گیا',
     ],
+    'haveCart' => 'آپ کے پاس پہلے ہی کارٹ ہے',
 
 
 ];

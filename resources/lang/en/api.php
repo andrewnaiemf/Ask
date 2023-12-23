@@ -68,5 +68,6 @@ return [
         'deletedSuccessfully' => 'Deleted successfully',
 
     ],
+    'haveCart' => 'You already have cart',
 
 ];

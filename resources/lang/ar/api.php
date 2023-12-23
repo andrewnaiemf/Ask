@@ -67,6 +67,7 @@ return [
         'updatedSuccessfully' => 'تم التحديث بنجاح',
         'deletedSuccessfully' => 'تم الحذف بنجاح',
     ],
+    'haveCart' => 'لديك سلة تسوق بالفعل',
 
 
 ];

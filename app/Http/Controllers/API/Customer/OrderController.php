@@ -81,7 +81,7 @@ class OrderController extends Controller
 
         $order = Order::where(['user_id' => auth()->user()->id,'type' => 'Cart'])->first();
         if ($order) {
-            return $this->returnError('You already have cart');
+            return $this->returnError( __('haveCart'));
         }
 
        $order = $this->createNewCart($request);
@@ -192,7 +192,7 @@ class OrderController extends Controller
         if ($request->coupon) {
             $validCoupon = $this->applyCoupon($request->coupon, $order);
             if (!$validCoupon) {
-                return $this->returnError('api.InvalidCoupon');
+                return $this->returnError( __('api.InvalidCoupon'));
             }
         }
 
@@ -222,7 +222,7 @@ class OrderController extends Controller
         if ($request->type) {
             $checkStock = $this->chechStock($order);
             if (!$checkStock) {
-                return $this->returnSuccessMessage('api.someProductIsNotAvailableNow');
+                return $this->returnSuccessMessage( __('api.someProductIsNotAvailableNow'));
             }
             $order->update(['type' => $request->type, 'status' => 'Accepted']);
             $this->decreaseStock($order);
@@ -231,7 +231,7 @@ class OrderController extends Controller
             return $this->returnSuccessMessage('api.orderCreatedSuccessfully');
         }
 
-        return $this->returnSuccessMessage('api.cartUpdatedSuccessfully');
+        return $this->returnSuccessMessage( __('api.cartUpdatedSuccessfully'));
     }
 
     public function updateShipping($request, $order)
