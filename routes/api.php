@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AdvertisementController;
 use App\Http\Controllers\API\CityController;
 use App\Http\Controllers\API\Customer\AddressController;
 use App\Http\Controllers\API\Customer\AuthController as CustomerAuthController;
@@ -75,6 +76,7 @@ Route::group([
 
         $provider->update(['status' => 'Accepted']);
     });
+    Route::get('advertisements',  [AdvertisementController::class, 'index']);
 
 
 });

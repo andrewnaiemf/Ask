@@ -17,7 +17,7 @@ class Advertisement extends Model  implements JsonSerializable
 
     protected $appends = ['image'];
 
-    protected $visible = ['id', 'image_ar', 'image_en'];
+    protected $visible = ['id', 'image'];
 
     public function getImageAttribute()
     {
