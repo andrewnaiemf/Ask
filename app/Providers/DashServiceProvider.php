@@ -7,6 +7,7 @@ use App\Dash\Resources\Addresses;
 use App\Dash\Resources\AdminGroupRoles;
 use App\Dash\Resources\AdminGroups;
 use App\Dash\Resources\Admins;
+use App\Dash\Resources\Advertisements;
 use App\Dash\Resources\AskForNews;
 use App\Dash\Resources\Beds;
 use App\Dash\Resources\BookingDetails;
@@ -83,6 +84,7 @@ class DashServiceProvider extends DashServiceProviderInit
             Suggestions::class,
             Questions::class,
             Cities::class,
+            Advertisements::class
             // Admins::class,
             // AdminGroups::class,
             // AdminGroupRoles::class,

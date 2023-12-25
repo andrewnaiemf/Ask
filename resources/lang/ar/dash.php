@@ -26,6 +26,7 @@ return [
     'Suggestions' => 'الافتراحات',
     'Booking' => 'الحجوزات',
     'Newss' => 'الاخبار',
+    'Advertisements'=> 'الاعلانات',
     'beds' => [
         'beds' => 'الاسرة',
         'name' =>  'الاسم' ,
@@ -210,5 +211,9 @@ return [
         'title' => 'العنوان',
         'whatsapp_phone' => 'الواتساب',
         'phone' => 'الهاتف',
-    ]
+    ],
+    'advertisements' => [
+        'image_ar' => 'الصورة ياللغة العربية ',
+        'image_en' => 'الصورة ياللغة الانجليزية ',
+    ],
 ];
