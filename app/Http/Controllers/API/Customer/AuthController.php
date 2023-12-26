@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         $credentials = $request->only(['phone','password']);
 
-        $token= JWTAuth::attempt($credentials);
+        $token = JWTAuth::attempt($credentials);
         if (!$token) {
             return $this->unauthorized();
         }
@@ -44,12 +44,12 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|numeric',
+            'phone' => 'required|numeric|exists:users,phone',
             'password' => 'required|string|min:6',
         ]);
 
         if ($validator->fails()) {
-            return $this->returnValidationError(401, $validator->errors()->all());
+            return $this->returnError($validator->errors()->all());
         }
         $remember = $request->boolean('remember_me', false);
 
@@ -57,7 +57,7 @@ class AuthController extends Controller
 
 
         if (! $token = JWTAuth::attempt($credentials, $remember)) {
-            return $this->unauthorized();
+            return $this->returnError(__('auth.password'));
         }
 
 
@@ -129,7 +129,7 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        $user=User::find(auth()->user()->id);
+        $user = User::find(auth()->user()->id);
         return $this->respondWithToken($user->refresh(), $user);
     }
 
@@ -144,13 +144,13 @@ class AuthController extends Controller
     {
 
         if(!isset($user->device_token)) {
-            $user->update(['device_token'=>json_encode($device_token)]);
+            $user->update(['device_token' => json_encode($device_token)]);
         } else {
             $devices_token = $user->device_token;
 
-            if(! in_array($device_token, $devices_token)) {
+            if(!in_array($device_token, $devices_token)) {
                 array_push($devices_token, $device_token);
-                $user->update(['device_token'=>json_encode($devices_token)]);
+                $user->update(['device_token' => json_encode($devices_token)]);
             }
         }
     }
@@ -170,12 +170,12 @@ class AuthController extends Controller
     private function userProfile($profile, $user)
     {
 
-        $path = 'Customer/' .$user->id. '/';
+        $path = 'Customer/' . $user->id . '/';
 
         $imageName = $profile->hashName();
         $profile->storeAs($path, $imageName);
-        $full_path = $path.$imageName;
-        $user->update(['profile'=> $full_path]);
+        $full_path = $path . $imageName;
+        $user->update(['profile' => $full_path]);
     }
 
 
