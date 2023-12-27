@@ -57,6 +57,7 @@ return [
     'someProductIsNotAvailableNow' => 'بعض المنتجات غير متاحة حالياً',
     'orderCreatedSuccessfully' => 'تم إنشاء الطلب بنجاح',
     'orderUpdatedSuccessfully' => 'تم تحديث الطلب بنجاح',
+    'cartDeletedSuccessfully' => 'تم حذف السلة بنجاح',
     'cartUpdatedSuccessfully' => 'تم تحديث العربة بنجاح',
     'unauthorizedAction' => 'غير مصرح لها',
     'addressUpdatedSuccessfully' => 'تم تحديث العنوان بنجاح',

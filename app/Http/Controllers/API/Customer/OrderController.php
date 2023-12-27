@@ -431,11 +431,19 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteCart()
     {
-        //
+        $order = Order::where(['user_id' => auth()->user()->id, 'type' => 'Cart'])->with('orderItems.product')->first();
+
+        if ($order) {
+            foreach ($order->orderItems as $item) {
+                $item->delete();
+            }
+        }
+
+        $order->delete();
+        return $this->returnSuccessMessage( __('api.cartDeletedSuccessfully'));
     }
 }

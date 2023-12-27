@@ -58,6 +58,7 @@ return [
     'orderCreatedSuccessfully' => 'Order created successfully',
     'cartUpdatedSuccessfully' => 'Cart updated successfully',
     'orderUpdatedSuccessfully' => 'Order updated successfully',
+    'cartDeletedSuccessfully' => 'cart deleted successfully',
     'unauthorizedAction' => 'Unauthorized',
     'addressUpdatedSuccessfully' => 'Address updated successfully',
     'addressDeletedSuccessfully' => 'Address deleted successfully',
