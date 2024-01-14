@@ -248,8 +248,8 @@ class AuthController extends Controller
             'location' => 'nullable|string',
             'city_id' => 'integer|required|exists:cities,id',
             'commercial_register' => 'required|string',
-            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'commercial_register_iamge' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10000',
+            'commercial_register_iamge' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000',
             'terms' => 'accepted',
             'device_token' => 'required|string'
         ]);
