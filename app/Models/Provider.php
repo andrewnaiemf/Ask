@@ -90,6 +90,9 @@ class Provider extends Model
             if ($field === 'email') {
                 $communication[$field] = $user->email;
             }
+            if ($field === 'phone') {
+                $communication[$field] = $user->phone;
+            }
         }
 
         $isNull = true;
