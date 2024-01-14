@@ -81,7 +81,12 @@ class OrderController extends Controller
 
         $order = Order::where(['user_id' => auth()->user()->id,'type' => 'Cart'])->first();
         if ($order) {
-            return $this->returnError( __('haveCart'));
+
+            return response()->json([
+                'status' => false,
+                'msg' =>__('haveCart'),
+                'have_cart' => true
+            ], 422);
         }
 
        $order = $this->createNewCart($request);
