@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
-        'user_id','provider_id','notes','status','department_id','sub_department_id'
+        'user_id','provider_id','notes','status','department_id','sub_department_id','year','month','day','time'
     ];
 
-    protected $hidden =[
+    protected $hidden = [
         'deleted_at',
         'created_at',
         'updated_at',
@@ -46,11 +47,13 @@ class Booking extends Model
         return $this->belongsTo(Department::class, 'department_id');
     }
 
-    public function bookingDetail(){
+    public function bookingDetail()
+    {
         return $this->hasOne(BookingDetails::class);
     }
 
-    public function hotelBookingDetail(){
+    public function hotelBookingDetail()
+    {
         return $this->hasOne(HotelBookingDetails::class);
     }
 
