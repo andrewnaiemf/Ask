@@ -43,7 +43,7 @@ class Provider extends Model
     ];
 
 
-    protected $appends = ['communications', 'description', 'rating', 'name'];
+    protected $appends = ['communications', 'description', 'rating', 'name', 'ratings'];
 
     public function getNameAttribute()
     {
@@ -54,10 +54,16 @@ class Provider extends Model
     public function getRatingAttribute()
     {
         // if (auth()->user()) {
-            $average_rating =  $this->ratings()->avg('rate');
+            $average_rating =  $this->user->ratings()->avg('rate');
             return number_format($average_rating, 2);
         // }
         // return '0' ;
+    }
+
+    public function getRatingsAttribute()
+    {
+        return $this->ratings()->get();
+
     }
 
     public function getCommunicationsAttribute()
@@ -201,7 +207,7 @@ class Provider extends Model
 
     public function ratings()
     {
-        return $this->hasMany(Rating::class, 'user_id');
+        return $this->hasManyThrough(Rating::class, User::class, 'id', 'user_id', 'user_id');
     }
 
     public function schedule()
