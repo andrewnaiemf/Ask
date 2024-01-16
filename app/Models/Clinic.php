@@ -41,8 +41,8 @@ class Clinic extends Model
         $providerId = $this->pivot ? $this->pivot->provider_id : null; // Get the provider ID from the pivot table
         $provider = $this->providers->where('id', $providerId)->first();
         // Check if the provider is available and has clinic schedules
-        if ($provider && $provider->clinicSchedules->isNotEmpty()) {
-            $providerSchedules = $provider->clinicSchedules;
+        if ($provider && $provider->clinicSchedules && $provider->clinicSchedules->isNotEmpty()) {
+            $providerSchedules = $provider->clinicSchedules->where('clinic_id', $this->id);
             $array['schedules'] = $providerSchedules->toArray();
         } else {
             $array['schedules'] = null;
