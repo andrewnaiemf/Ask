@@ -40,11 +40,11 @@ class ProviderController extends Controller
 
         if (in_array($provider->subdepartment->id, ['22', '23', '24'])) {
             $provider->load(['clinics' => function ($query) use ($id) {
-                $query->whereHas('schedules', function ($query) use ($id) {
-                    $query->where('provider_id', $id);
-                })->with(['schedules' => function ($query) use ($id) {
-                    $query->where('provider_id', $id)->with('clinicScheduleDoctors');
-                }]);
+                // $query->whereHas('schedules', function ($query) use ($id) {
+                //     $query->where('provider_id', $id);
+                // })->with(['schedules' => function ($query) use ($id) {
+                //     $query->where('provider_id', $id)->with('clinicScheduleDoctors');
+                // }]);
             }]);
         } else {
             $provider['clinics'] = [];

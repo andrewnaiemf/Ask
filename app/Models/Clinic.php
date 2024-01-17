@@ -42,8 +42,8 @@ class Clinic extends Model
         $provider = $this->providers->where('id', $providerId)->first();
         // Check if the provider is available and has clinic schedules
         if ($provider && $provider->clinicSchedules && $provider->clinicSchedules->isNotEmpty()) {
-            $providerSchedules = $provider->clinicSchedules->where('clinic_id', $this->id);
-            $array['schedules'] = $providerSchedules->toArray();
+            $providerSchedules = $provider->clinicSchedules->where('clinic_id', $this->id)->values();
+            $array['schedules'] = $providerSchedules;
         } else {
             $array['schedules'] = null;
         }
