@@ -5,6 +5,7 @@ use App\Http\Controllers\API\CityController;
 use App\Http\Controllers\API\Customer\AddressController;
 use App\Http\Controllers\API\Customer\AuthController as CustomerAuthController;
 use App\Http\Controllers\API\Customer\BookingController as CustomerBookingController;
+use App\Http\Controllers\API\Customer\ChatController;
 use App\Http\Controllers\API\Customer\FavoriteController;
 use App\Http\Controllers\API\Customer\HomeController as CustomerHomeController;
 use App\Http\Controllers\API\Customer\HotelController;
@@ -171,6 +172,10 @@ Route::group([
         Route::post('edit/cart', [OrderController::class, 'updateCart']);
         Route::get('cart', [OrderController::class, 'showCart']);
         Route::get('product/{id}', [CustomerProductController::class , 'show']);
+
+
+        Route::get('city-departments', [ChatController::class , 'index']);
+
 
     });
 

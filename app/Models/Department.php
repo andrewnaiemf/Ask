@@ -15,12 +15,19 @@ class Department extends Model
         'name_ar', 'name_en', 'name_eu', 'parent_id','icon'
     ];
 
-    protected $append = ['name'];
+    protected $append = ['name', 'identifier'];
 
     public function getNameAttribute(){
 
         $lang = app(Locales::class)->current();
         return  $this->{'name_'.$lang};
+    }
+
+
+
+    public function getIdentifierAttribute()
+    {
+        return $this->cities->pluck('pivot.identifier')->first();
     }
 
     protected $hidden = [
@@ -36,6 +43,7 @@ class Department extends Model
     $array['id'] = $this['id'];
     $array['name'] = $this->{'name_'.$lang};
     $array['icon'] = $this['icon'];
+    $array['identifier'] = $this->identifier;
     if ($this->relationLoaded('subdepartments')) {
         $array['subdepartments'] = $this->subdepartments->map(function ($subdepartment) {
             // Load the providers relationship if it's not already loaded
@@ -79,5 +87,10 @@ class Department extends Model
             'id', // Local key on the current model (departments table)
             'id' // Local key on the intermediate model (providers table)
         )->where('status', 'Accepted');
+    }
+
+    public function cities()
+    {
+        return $this->belongsToMany(City::class, 'city_department')->withPivot('identifier');
     }
 }
