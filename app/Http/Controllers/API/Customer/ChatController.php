@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -16,10 +17,14 @@ class ChatController extends Controller
     public function index()
     {
         $locale = auth()->user()->lng;
-        app()->setLocale( $locale ) ;
+        app()->setLocale($locale) ;
 
-        $departments = User::find(auth()->user()->id)->city->departments;
-
+        $main_department_ids = Department::whereNull('parent_id')->pluck('id');
+        $departments = User::find(auth()->user()->id)
+            ->city
+            ->departments()
+            ->whereIn('departments.id', $main_department_ids)
+            ->get();
         return $this->returnData($departments);
     }
 
