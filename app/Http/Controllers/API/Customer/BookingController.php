@@ -25,11 +25,11 @@ class BookingController extends Controller
 
         $bookings = User::find(auth()->user()->id)->bookings()
 
-                ->when(in_array($request->status, ['New', 'Today']), function ($query) use ($request) {
-                    return $query->where('status', $request->status);
+                ->when($request->status == 'New', function ($query) use ($request) {
+                    return $query->whereIn('status',['New', 'Today']);
                 })
 
-                ->when(!in_array($request->status, ['New', 'Today']), function ($query) use ($request) {
+                ->when($request->status != 'New', function ($query) use ($request) {
                     return $query->whereNotIn('status', ['New', 'Today']);
                 })
                 // ->when($request->status == 'New', function ($query) use ($request) {
