@@ -22,13 +22,22 @@ class BookingController extends Controller
     {
         $perPage = $request->header('per_page', 10);
 
+
         $bookings = User::find(auth()->user()->id)->bookings()
-                ->when($request->status == 'New', function ($query) use ($request) {
+
+                ->when(in_array($request->status, ['New', 'Today']), function ($query) use ($request) {
                     return $query->where('status', $request->status);
                 })
-                ->unless($request->status == 'New', function ($query) {
-                    return $query->whereNotIn('status', ['New']);
+
+                ->when(!in_array($request->status, ['New', 'Today']), function ($query) use ($request) {
+                    return $query->whereNotIn('status', ['New', 'Today']);
                 })
+                // ->when($request->status == 'New', function ($query) use ($request) {
+                //     return $query->where('status', $request->status);
+                // })
+                // ->unless($request->status == 'New', function ($query) {
+                //     return $query->whereNotIn('status', ['New']);
+                // })
                 ->with(['hotelBookingDetail.roomBookingDetail.room.room_type','bookingDetail', 'provider.user', 'user', 'clinicBookings.clinic'])
                 ->orderBy('id', 'desc')
                 ->simplePaginate($perPage);
