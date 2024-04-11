@@ -48,7 +48,7 @@ class Notification extends Model
                 $message = str_replace(':sender_name', $sender['name'], __('messages.' . $messageTemplateKey, ['stars' => $stars]));
                 break;
             default:
-                $message = str_replace(':sender_name', $sender['name'], __('messages.' . $messageTemplateKey, []));
+                $message = str_replace(':sender_name', $sender['name'], __($messageTemplateKey, []));
                 break;
         }
 
