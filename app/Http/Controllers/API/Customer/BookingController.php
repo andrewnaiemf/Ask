@@ -26,7 +26,7 @@ class BookingController extends Controller
         $bookings = User::find(auth()->user()->id)->bookings()
 
                 ->when($request->status == 'New', function ($query) use ($request) {
-                    return $query->whereIn('status',['New', 'Today']);
+                    return $query->whereIn('status', ['New', 'Today']);
                 })
 
                 ->when($request->status != 'New', function ($query) use ($request) {
@@ -38,7 +38,7 @@ class BookingController extends Controller
                 // ->unless($request->status == 'New', function ($query) {
                 //     return $query->whereNotIn('status', ['New']);
                 // })
-                ->with(['hotelBookingDetail.roomBookingDetail.room.room_type','bookingDetail', 'provider.user', 'user', 'clinicBookings.clinic'])
+                ->with(['hotelBookingDetail.roomBookingDetail.room.roomType','bookingDetail', 'provider.user', 'user', 'clinicBookings.clinic'])
                 ->orderBy('id', 'desc')
                 ->simplePaginate($perPage);
 
@@ -48,30 +48,31 @@ class BookingController extends Controller
     public function show($id)
     {
         $booking = Booking::find($id);
-        $booking->load((['hotelBookingDetail.roomBookingDetail.room.room_type','bookingDetail', 'provider.user', 'user', 'clinicBookings.clinic']));
+        $booking->load((['hotelBookingDetail.roomBookingDetail.room.roomType','bookingDetail', 'provider.user', 'user', 'clinicBookings.clinic']));
 
         return $this->returnData($booking);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
-        $validation =  $this->validateBookingData( $request );
+        $validation =  $this->validateBookingData($request);
 
-        if ( $validation) {
+        if ($validation) {
             return $this->returnError($validation);
         }
 
         $provider = Provider::find($request->provider_id);
 
         $data = [
-            'department_id'=> $provider->department->id,
-            'sub_department_id'=> $provider->subDepartment->id,
+            'department_id' => $provider->department->id,
+            'sub_department_id' => $provider->subDepartment->id,
             'user_id' => auth()->user()->id
         ];
 
-        $data = array_merge($data , $request->all());
+        $data = array_merge($data, $request->all());
 
-        $booking = Booking::create( $data);
+        $booking = Booking::create($data);
 
         if ($request->filled(['year', 'month', 'day', 'time'])) {
             $this->bookingDetail($request, $booking);
@@ -88,33 +89,36 @@ class BookingController extends Controller
             }
         }
 
-        PushNotification::create($booking->user_id ,$provider->user->id ,$booking ,'booking');
+        PushNotification::create($booking->user_id, $provider->user->id, $booking, 'booking');
 
-        return $this->returnSuccessMessage( trans("api.bookingSentSuccessfully") );
+        return $this->returnSuccessMessage(trans("api.bookingSentSuccessfully"));
     }
 
-    public function bookingDetail($request, $booking){
+    public function bookingDetail($request, $booking)
+    {
         $bookingDetails = new BookingDetails();
-            $bookingDetails->year = $request->input('year');
-            $bookingDetails->month = $request->input('month');
-            $bookingDetails->day = $request->input('day');
-            $bookingDetails->time = $request->input('time');
-            $booking->bookingDetail()->save($bookingDetails);
+        $bookingDetails->year = $request->input('year');
+        $bookingDetails->month = $request->input('month');
+        $bookingDetails->day = $request->input('day');
+        $bookingDetails->time = $request->input('time');
+        $booking->bookingDetail()->save($bookingDetails);
     }
 
-    public function clinicBooking($request, $booking_id){
+    public function clinicBooking($request, $booking_id)
+    {
         $clinic = Clinic::find($request['clinic_id']);
-            if ($clinic) {
-                $clinic_boooking = ClinicBooking::create([
-                    'booking_id' => $booking_id,
-                    'doctor_name' => $request->doctor_name,
-                    'cost' => $request->cost,
-                    'clinic_id' => $clinic->id,
-                ]);
-            }
+        if ($clinic) {
+            $clinic_boooking = ClinicBooking::create([
+                'booking_id' => $booking_id,
+                'doctor_name' => $request->doctor_name,
+                'cost' => $request->cost,
+                'clinic_id' => $clinic->id,
+            ]);
+        }
     }
 
-    public function hotelBooking($request, $booking){
+    public function hotelBooking($request, $booking)
+    {
 
         $room_id = $request->input('room_id');
         try {
@@ -155,7 +159,8 @@ class BookingController extends Controller
         }
     }
 
-    public function validateBookingData ( $request ) {
+    public function validateBookingData($request)
+    {
 
 
         // Common validation rules for both clinic and hotel booking
@@ -201,7 +206,7 @@ class BookingController extends Controller
             'clinic_id' => 'required|exists:clinics,id',
         ];
 
-         // Validation rules for hotel booking
+        // Validation rules for hotel booking
         $hotelRules = [
             'year' => 'required_with:arrival_month,departure_month|integer|date_format:Y|in:' . date('Y'),
             'arrival_month' => [
