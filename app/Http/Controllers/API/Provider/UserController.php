@@ -229,9 +229,9 @@ class UserController extends Controller
 
     public function workDescription($userId, $email, $city_id){
         $userData = [];
-        if ($email) {
+        //if ($email) {
             $userData['email'] = $email;
-        }
+        //}
 
         if ($city_id) {
             $userData['city_id'] = $city_id;

@@ -18,5 +18,4 @@ return [
     'your_order_ReadyForShipping' => 'your order is ready for shipping',
     'your_order_Shipped' => 'your order is shipped',
     'your_order_Delivered' => 'your order is delivered',
-
 ];
