@@ -44,6 +44,6 @@ class ValidateStock implements Rule
      */
     public function message()
     {
-        return 'The selected quantity is not available in stock.';
+        return __('api.The selected quantity is not available in stock.');
     }
 }

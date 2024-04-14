@@ -70,5 +70,5 @@ return [
 
     ],
     'haveCart' => 'You already have cart',
-
+    'The selected quantity is not available in stock.' => 'The selected quantity is not available in stock.',
 ];

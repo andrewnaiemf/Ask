@@ -69,6 +69,6 @@ return [
         'deletedSuccessfully' => 'تم الحذف بنجاح',
     ],
     'haveCart' => 'لديك سلة تسوق بالفعل',
-
+    'The selected quantity is not available in stock.' => 'الكمية المحددة غير متاح في المخزن',
 
 ];
