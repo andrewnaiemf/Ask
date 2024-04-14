@@ -83,6 +83,7 @@ class PushNotification
         $sender = User::find($sender_id);
 
         $friendLocale = $reciever->lng;
+        $senderLocale = $reciever->lng;
         app()->setLocale($friendLocale);
 
         $messageTemplateKey = '';
@@ -144,5 +145,7 @@ class PushNotification
         $message = str_replace($placeholder, '', $message);
 
         PushNotification::send($reciever, $screen, $message, $data = null, $type = null);
+        app()->setLocale($senderLocale);
+
     }
 }
