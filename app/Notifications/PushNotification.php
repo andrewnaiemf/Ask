@@ -103,8 +103,7 @@ class PushNotification
                 $statusTranslationKey = 'provider_' . $status . '_booking';
                 $actionMessage = __('messages.' . $statusTranslationKey);
                 $message = $sender->name . ' ' . $actionMessage;
-
-                $messageTemplateKey = $actionMessage;
+                $messageTemplateKey = $statusTranslationKey;
                 break;
             case 'new_order':
                 $message = $sender->name . ' ' . __('messages.new_order_messages');
