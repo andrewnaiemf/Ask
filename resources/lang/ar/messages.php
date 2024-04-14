@@ -11,6 +11,7 @@ return [
     'your_order_Completed' => 'تم استكمال طلبك',
     'new_order' => 'لديك طلب جديد',
     'rating_message' => 'لديك تقييم',
-
+    'messages.provider_Expired_booking' => 'لقد تم انتهاء حجزك',
+    'messages.provider_Today_booking' => 'لديك حجز اليوم',
 
 ];
