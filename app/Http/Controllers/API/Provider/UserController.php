@@ -147,6 +147,11 @@ class UserController extends Controller
         $provider = Provider::where('user_id' , $userId)->first();
         $validation =  $this->validateUserData( $request );
 
+        if($request->lng){
+            $user = User::find(auth()->user()->id);
+            $user->update(['lng' => $request->lng]);
+        }
+
         if ( $validation) {
             return $validation;
         }
