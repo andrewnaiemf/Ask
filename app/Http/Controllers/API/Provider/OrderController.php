@@ -143,6 +143,7 @@ class OrderController extends Controller
         if (in_array($status ,$shippingStatus))
         {
             $this->updateOrderShippingStatus($order, $status);
+            PushNotification::create($order->provider->user_id, $order->user_id, $order, $status.'_order');
         }
     }
 

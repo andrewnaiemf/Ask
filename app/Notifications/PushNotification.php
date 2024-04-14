@@ -122,6 +122,18 @@ class PushNotification
                 $message = $sender->name . ' ' . __('messages.your_order_Completed');
                 $messageTemplateKey = 'your_order_Completed';
                 break;
+            case 'ReadyForShipping_order':
+                $message = $sender->name . ' ' . __('messages.your_order_ReadyForShipping');
+                $messageTemplateKey = 'your_order_ReadyForShipping';
+                break;
+            case 'Shipped_order':
+                $message = $sender->name . ' ' . __('messages.your_order_Shipped');
+                $messageTemplateKey = 'your_order_Shipped';
+                break;
+            case 'Delivered_order':
+                $message = $sender->name . ' ' . __('messages.your_order_Delivered');
+                $messageTemplateKey = 'your_order_Delivered';
+                break;
             default:
                 $message = '';
                 break;
