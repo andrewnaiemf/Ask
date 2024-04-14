@@ -117,8 +117,8 @@ class BookingController extends Controller
 
     public function update(Request $request, $id)
     {
-
-        $provider = User::find(auth()->user()->id)->provider;
+        $user = User::find(auth()->user()->id);
+        $provider = $user->provider;
         $booking = Booking::where('provider_id', $provider->id)->findOrFail($id);
 
         $validator = Validator::make($request->all(), [
@@ -133,6 +133,7 @@ class BookingController extends Controller
 
         $booking->update($validatedData);
         PushNotification::create($provider->user->id, $booking->user_id, $booking ,'booking_status');
+        app()->setLocale($user->lng);
 
         return $this->returnSuccessMessage( trans("api.bookingUpdatedSuccessfully") );
 
