@@ -3,7 +3,7 @@
 return [
     'rating_message' => ':sender_name gave you :stars stars',
     'New_booking' => ':sender_name make a new booking',
-    'provider_Completed_booking' => 'complete your booking',
+    'messages.provider_Completed_booking' => 'complete your booking',
     'messages.provider_Expired_booking' => 'Your booking is expired',
     'messages.provider_Today_booking' => 'You have a booking today',
     'provider_Rejected_booking' => 'rejecte your booking',
